@@ -29,7 +29,8 @@ import com.codenjoy.dojo.services.CommandChain;
 import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.RandomDice;
 
-        import static com.codenjoy.dojo.services.Command.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * User: your name
@@ -40,9 +41,25 @@ import com.codenjoy.dojo.services.RandomDice;
 public class YourSolver extends AbstractJsonSolver<Board> {
 
     private Dice dice;
+    private int counter = 0;
+
+    private CommandChain[] left = new CommandChain[10];
+    private CommandChain[] right = new CommandChain[10];
 
     public YourSolver(Dice dice) {
         this.dice = dice;
+        for (int i = 0; i < 10; i++) {
+            left[i] = new CommandChain();
+            right[i] = new CommandChain();
+        }
+        left[0].then(Command.LEFT).then(Command.DOWN);
+        right[0].then(Command.RIGHT).then(Command.DOWN);
+        for (int i = 1; i < 10; i++) {
+            left[i].then(Command.LEFT);
+            left[i].then(left[i-1]);
+            right[i].then(Command.RIGHT);
+            right[i].then(right[i-1]);
+        }
     }
 
     @Override
@@ -53,25 +70,9 @@ public class YourSolver extends AbstractJsonSolver<Board> {
     private CommandChain getAnswerList(Board board) {
         System.out.println(board.getGlass().getAt(board.getCurrentFigurePoint()));
         System.out.println(board.getCurrentFigureType());
-        CommandChain left1 = new CommandChain();
-        left1.then(LEFT);
-        CommandChain left2 = left1.then(LEFT);
-        CommandChain left3 = left2.then(LEFT);
-        CommandChain left4 = left3.then(LEFT);
-        CommandChain left5 = left4.then(LEFT);
-        CommandChain left6 = left5.then(LEFT);
-        CommandChain left7 = left6.then(LEFT);
-        CommandChain left8 = left7.then(LEFT);
-        CommandChain right1 = new CommandChain();
-        right1.then(RIGHT);
-        CommandChain right2 = right1.then(RIGHT);
-        CommandChain right3 = right2.then(RIGHT);
-        CommandChain right4 = right3.then(RIGHT);
-        CommandChain right5 = right4.then(RIGHT);
-        CommandChain right6 = right5.then(RIGHT);
-        CommandChain right7 = right6.then(RIGHT);
-        CommandChain right8 = right7.then(RIGHT);
-        return right8.then(Command.DOWN);
+
+        return left[5];
+
     }
 
     public static void main(String[] args) {
