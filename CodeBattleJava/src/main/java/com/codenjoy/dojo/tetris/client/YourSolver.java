@@ -56,11 +56,13 @@ public class YourSolver extends AbstractJsonSolver<Board> {
             left[i] = new CommandChain();
             right[i] = new CommandChain();
         }
-        left[0].then(Command.LEFT);
-        right[0].then(Command.RIGHT);
+        left[0].then(Command.LEFT).then(Command.DOWN);
+        right[0].then(Command.RIGHT).then(Command.DOWN);
         for (int i = 1; i < 10; i++) {
-            left[i] = left[i - 1].then(Command.LEFT);
-            right[i] = right[i - 1].then(Command.RIGHT);
+            left[i].then(Command.LEFT);
+            left[i].then(left[i-1]);
+            right[i].then(Command.RIGHT);
+            right[i].then(right[i-1]);
         }
     }
 
@@ -73,18 +75,7 @@ public class YourSolver extends AbstractJsonSolver<Board> {
         System.out.println(board.getGlass().getAt(board.getCurrentFigurePoint()));
         System.out.println(board.getCurrentFigureType());
 
-        CommandChain chain = new CommandChain();
-        /*if (counter < 10)
-            for (counter = 9; counter >=0; counter--) {
-                chain = left[counter];
-            }
-        else
-            for (int i = 0; i < 10; i++) {
-                chain = right[i];
-                counter++;
-            }*/
-
-        return chain.then(DOWN);
+        return left[5];
 
     }
 
