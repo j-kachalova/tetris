@@ -28,8 +28,12 @@ import com.codenjoy.dojo.services.Command;
 import com.codenjoy.dojo.services.CommandChain;
 import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.RandomDice;
+import com.codenjoy.dojo.tetris.model.Elements;
 
-        import static com.codenjoy.dojo.services.Command.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.codenjoy.dojo.services.Command.*;
 
 /**
  * User: your name
@@ -52,9 +56,13 @@ public class YourSolver extends AbstractJsonSolver<Board> {
 
     private CommandChain getAnswerList(Board board) {
         System.out.println(board.getGlass().getAt(board.getCurrentFigurePoint()));
-        System.out.println(board.getCurrentFigureType());
+        //System.out.println(board.getCurrentFigureType());
+        System.out.println("какой-то текст для проверки");
+
+        /** команды движения влево */
         CommandChain left1 = new CommandChain();
         left1.then(LEFT);
+
         CommandChain left2 = left1.then(LEFT);
         CommandChain left3 = left2.then(LEFT);
         CommandChain left4 = left3.then(LEFT);
@@ -62,6 +70,9 @@ public class YourSolver extends AbstractJsonSolver<Board> {
         CommandChain left6 = left5.then(LEFT);
         CommandChain left7 = left6.then(LEFT);
         CommandChain left8 = left7.then(LEFT);
+
+        /** команды движения вправо */
+
         CommandChain right1 = new CommandChain();
         right1.then(RIGHT);
         CommandChain right2 = right1.then(RIGHT);
@@ -71,9 +82,53 @@ public class YourSolver extends AbstractJsonSolver<Board> {
         CommandChain right6 = right5.then(RIGHT);
         CommandChain right7 = right6.then(RIGHT);
         CommandChain right8 = right7.then(RIGHT);
-        return right8.then(Command.DOWN);
+
+        /** массив минимальных размеров фигур*/
+        List<Integer> minSize = new ArrayList<>();
+        minSize.add(2); minSize.add(1); minSize.add(1); minSize.add(1);
+        System.out.println("проверка индекса" + minSize.get(0));
+
+        /** нахождение типа фигуры */
+        Elements typeFigure = board.getCurrentFigureType();
+        GlassBoard glassBoard = board.getGlass();
+        boolean checkLine = false;
+        for(int i=0; checkLine; i++){
+            int y = glassBoard.getFreeSpace().get(i).getY();
+            int x = glassBoard.getFreeSpace().get(i).getX();
+            boolean checkCell
+             for(int j=y+1;i<18; j++) {
+                 if (!board.getGlass().isFree(x, j)){
+                     break;
+                 }
+             }
+        }
+        System.out.println(glassBoard.getFreeSpace().get(0).getX());
+        System.out.println(glassBoard.getFreeSpace().get(0).getY());
+        System.out.println(glassBoard.getFreeSpace().get(0));
+        System.out.println(glassBoard.getFreeSpace());
+        return left8.then(Command.DOWN);
     }
 
+    /*
+    ........OO........
+    ........OO........
+    ..................
+    ..................
+    ..................
+    ..................
+    ........OO........
+    ........OO........
+    OO......OO........
+    OO......OO........
+    OO......OO........
+    OO......OO........
+    OO......OO........
+    OO......OO........
+    OO......OO........
+    OO......OO........
+    OO......OO........
+    OO......OO........
+     */
     public static void main(String[] args) {
         WebSocketRunner.runClient(
                 // скопируйте сюда адрес из браузера, на который перейдете после регистрации/логина

@@ -96,8 +96,8 @@ public abstract class AbstractLayeredBoard<E extends CharElements> implements Cl
      */
     protected List<Point> get(int numLayer, E... elements) {
         List<Point> result = new LinkedList<>();
-        for (int x = 0; x < size; x++) {
-            for (int y = 0; y < size; y++) {
+        for (int y = 0; y < size; y++) {
+            for (int x = 0; x < size; x++) {
                 for (E element : elements) {
                     if (valueOf(field[numLayer][x][y]).equals(element)) {
                         result.add(pt(x, y));
