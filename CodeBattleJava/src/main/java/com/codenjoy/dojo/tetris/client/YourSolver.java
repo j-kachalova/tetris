@@ -1,9 +1,5 @@
 package com.codenjoy.dojo.tetris.client;
 
-import static com.codenjoy.dojo.services.Command.DOWN;
-import static com.codenjoy.dojo.services.Command.LEFT;
-import static com.codenjoy.dojo.services.Command.RIGHT;
-
 /*-
  * #%L
  * Codenjoy - it's a dojo-like platform from developers to developers.
@@ -33,6 +29,8 @@ import com.codenjoy.dojo.services.CommandChain;
 import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.RandomDice;
 
+        import static com.codenjoy.dojo.services.Command.*;
+
 /**
  * User: your name
  * Это твой алгоритм AI для игры. Реализуй его на свое усмотрение.
@@ -55,12 +53,25 @@ public class YourSolver extends AbstractJsonSolver<Board> {
     private CommandChain getAnswerList(Board board) {
         System.out.println(board.getGlass().getAt(board.getCurrentFigurePoint()));
         System.out.println(board.getCurrentFigureType());
-        return Command.LEFT
-                .then(Command.LEFT)
-                .then(Command.DOWN);
-                /*.then(Command.random(dice))
-                .then(Command.ROTATE_CLOCKWISE_180);*/
-
+        CommandChain left1 = new CommandChain();
+        left1.then(LEFT);
+        CommandChain left2 = LEFT.then(LEFT);
+        CommandChain left3 = LEFT.then(LEFT).then(LEFT);
+        CommandChain left4 = LEFT.then(LEFT).then(LEFT).then(LEFT);
+        CommandChain left5 = LEFT.then(LEFT).then(LEFT).then(LEFT).then(LEFT);
+        CommandChain left6 = LEFT.then(LEFT).then(LEFT).then(LEFT).then(LEFT).then(LEFT);
+        CommandChain left7 = LEFT.then(LEFT).then(LEFT).then(LEFT).then(LEFT).then(LEFT).then(LEFT);
+        CommandChain left8 = LEFT.then(LEFT).then(LEFT).then(LEFT).then(LEFT).then(LEFT).then(LEFT).then(LEFT);
+        CommandChain right1 = new CommandChain();
+        right1.then(RIGHT);
+        CommandChain right2 = RIGHT.then(RIGHT);
+        CommandChain right3 = RIGHT.then(RIGHT).then(RIGHT);
+        CommandChain right4 = RIGHT.then(RIGHT).then(RIGHT).then(RIGHT);
+        CommandChain right5 = RIGHT.then(RIGHT).then(RIGHT).then(RIGHT).then(RIGHT);
+        CommandChain right6 = RIGHT.then(RIGHT).then(RIGHT).then(RIGHT).then(RIGHT).then(RIGHT);
+        CommandChain right7 = RIGHT.then(RIGHT).then(RIGHT).then(RIGHT).then(RIGHT).then(RIGHT).then(RIGHT);
+        CommandChain right8 = RIGHT.then(RIGHT).then(RIGHT).then(RIGHT).then(RIGHT).then(RIGHT).then(RIGHT).then(RIGHT);
+        return right8.then(Command.DOWN);
     }
 
     public static void main(String[] args) {
