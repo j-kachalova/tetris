@@ -55,22 +55,22 @@ public class YourSolver extends AbstractJsonSolver<Board> {
         System.out.println(board.getCurrentFigureType());
         CommandChain left1 = new CommandChain();
         left1.then(LEFT);
-        CommandChain left2 = LEFT.then(LEFT);
-        CommandChain left3 = LEFT.then(LEFT).then(LEFT);
-        CommandChain left4 = LEFT.then(LEFT).then(LEFT).then(LEFT);
-        CommandChain left5 = LEFT.then(LEFT).then(LEFT).then(LEFT).then(LEFT);
-        CommandChain left6 = LEFT.then(LEFT).then(LEFT).then(LEFT).then(LEFT).then(LEFT);
-        CommandChain left7 = LEFT.then(LEFT).then(LEFT).then(LEFT).then(LEFT).then(LEFT).then(LEFT);
-        CommandChain left8 = LEFT.then(LEFT).then(LEFT).then(LEFT).then(LEFT).then(LEFT).then(LEFT).then(LEFT);
+        CommandChain left2 = left1.then(LEFT);
+        CommandChain left3 = left2.then(LEFT);
+        CommandChain left4 = left3.then(LEFT);
+        CommandChain left5 = left4.then(LEFT);
+        CommandChain left6 = left5.then(LEFT);
+        CommandChain left7 = left6.then(LEFT);
+        CommandChain left8 = left7.then(LEFT);
         CommandChain right1 = new CommandChain();
         right1.then(RIGHT);
-        CommandChain right2 = RIGHT.then(RIGHT);
-        CommandChain right3 = RIGHT.then(RIGHT).then(RIGHT);
-        CommandChain right4 = RIGHT.then(RIGHT).then(RIGHT).then(RIGHT);
-        CommandChain right5 = RIGHT.then(RIGHT).then(RIGHT).then(RIGHT).then(RIGHT);
-        CommandChain right6 = RIGHT.then(RIGHT).then(RIGHT).then(RIGHT).then(RIGHT).then(RIGHT);
-        CommandChain right7 = RIGHT.then(RIGHT).then(RIGHT).then(RIGHT).then(RIGHT).then(RIGHT).then(RIGHT);
-        CommandChain right8 = RIGHT.then(RIGHT).then(RIGHT).then(RIGHT).then(RIGHT).then(RIGHT).then(RIGHT).then(RIGHT);
+        CommandChain right2 = right1.then(RIGHT);
+        CommandChain right3 = right2.then(RIGHT);
+        CommandChain right4 = right3.then(RIGHT);
+        CommandChain right5 = right4.then(RIGHT);
+        CommandChain right6 = right5.then(RIGHT);
+        CommandChain right7 = right6.then(RIGHT);
+        CommandChain right8 = right7.then(RIGHT);
         return right8.then(Command.DOWN);
     }
 
