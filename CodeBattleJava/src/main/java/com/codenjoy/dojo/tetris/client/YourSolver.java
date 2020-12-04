@@ -33,6 +33,9 @@ import com.codenjoy.dojo.services.CommandChain;
 import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.RandomDice;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * User: your name
  * Это твой алгоритм AI для игры. Реализуй его на свое усмотрение.
@@ -42,9 +45,23 @@ import com.codenjoy.dojo.services.RandomDice;
 public class YourSolver extends AbstractJsonSolver<Board> {
 
     private Dice dice;
+    private int counter = 0;
+
+    private CommandChain[] left = new CommandChain[10];
+    private CommandChain[] right = new CommandChain[10];
 
     public YourSolver(Dice dice) {
         this.dice = dice;
+        for (int i = 0; i < 10; i++) {
+            left[i] = new CommandChain();
+            right[i] = new CommandChain();
+        }
+        left[0].then(Command.LEFT);
+        right[0].then(Command.RIGHT);
+        for (int i = 1; i < 10; i++) {
+            left[i] = left[i - 1].then(Command.LEFT);
+            right[i] = right[i - 1].then(Command.RIGHT);
+        }
     }
 
     @Override
@@ -55,11 +72,19 @@ public class YourSolver extends AbstractJsonSolver<Board> {
     private CommandChain getAnswerList(Board board) {
         System.out.println(board.getGlass().getAt(board.getCurrentFigurePoint()));
         System.out.println(board.getCurrentFigureType());
-        return Command.LEFT
-                .then(Command.LEFT)
-                .then(Command.DOWN);
-                /*.then(Command.random(dice))
-                .then(Command.ROTATE_CLOCKWISE_180);*/
+
+        CommandChain chain = new CommandChain();
+        /*if (counter < 10)
+            for (counter = 9; counter >=0; counter--) {
+                chain = left[counter];
+            }
+        else
+            for (int i = 0; i < 10; i++) {
+                chain = right[i];
+                counter++;
+            }*/
+
+        return chain.then(DOWN);
 
     }
 

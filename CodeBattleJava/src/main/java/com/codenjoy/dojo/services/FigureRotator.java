@@ -19,60 +19,60 @@ public class FigureRotator {
     };
 
     public static Point[] predictCurrentFigurePoints(Rotation rotation, Point anchor, Elements figureType) {
-        var shiftTopAfterRotation = getShiftAfterRotation(Direction.UP, rotation);
-        var shiftRightAfterRotation = getShiftAfterRotation(Direction.RIGHT, rotation);
-        var shiftBottomAfterRotation = getShiftAfterRotation(Direction.DOWN, rotation);
-        var shiftLeftAfterRotation = getShiftAfterRotation(Direction.LEFT, rotation);
+        var shiftTopAfterRotation = (var) getShiftAfterRotation(Direction.UP, rotation);
+        var shiftRightAfterRotation = (var) getShiftAfterRotation(Direction.RIGHT, rotation);
+        var shiftBottomAfterRotation = (var) getShiftAfterRotation(Direction.DOWN, rotation);
+        var shiftLeftAfterRotation = (var) getShiftAfterRotation(Direction.LEFT, rotation);
 
         switch (figureType) {
         case BLUE:
             return new Point[] {
-                    shift(anchor, shiftTopAfterRotation, 1),
+                    shift(anchor, (BiFunction<Point, Integer, Point>) shiftTopAfterRotation, 1),
                     anchor,
-                    shift(anchor, shiftBottomAfterRotation, 1),
-                    shift(anchor, shiftBottomAfterRotation, 2),
+                    shift(anchor, (BiFunction<Point, Integer, Point>) shiftBottomAfterRotation, 1),
+                    shift(anchor, (BiFunction<Point, Integer, Point>) shiftBottomAfterRotation, 2),
             };
         case CYAN:
             return new Point[] {
-                    shift(anchor, shiftTopAfterRotation, 1),
+                    shift(anchor, (BiFunction<Point, Integer, Point>) shiftTopAfterRotation, 1),
                     anchor,
-                    shift(anchor, shiftBottomAfterRotation, 1),
-                    shift(shift(anchor, shiftBottomAfterRotation, 1), shiftLeftAfterRotation, 1),
+                    shift(anchor, (BiFunction<Point, Integer, Point>) shiftBottomAfterRotation, 1),
+                    shift(shift(anchor, (BiFunction<Point, Integer, Point>) shiftBottomAfterRotation, 1), (BiFunction<Point, Integer, Point>) shiftLeftAfterRotation, 1),
             };
         case ORANGE:
             return new Point[] {
-                    shift(anchor, shiftTopAfterRotation, 1),
+                    shift(anchor, (BiFunction<Point, Integer, Point>) shiftTopAfterRotation, 1),
                     anchor,
-                    shift(anchor, shiftBottomAfterRotation, 1),
-                    shift(shift(anchor, shiftBottomAfterRotation, 1), shiftRightAfterRotation, 1),
+                    shift(anchor, (BiFunction<Point, Integer, Point>) shiftBottomAfterRotation, 1),
+                    shift(shift(anchor, (BiFunction<Point, Integer, Point>) shiftBottomAfterRotation, 1), (BiFunction<Point, Integer, Point>) shiftRightAfterRotation, 1),
             };
         case YELLOW:
             return new Point[] {
                     anchor,
-                    shift(anchor, shiftRightAfterRotation, 1),
-                    shift(anchor, shiftBottomAfterRotation, 1),
-                    shift(shift(anchor, shiftBottomAfterRotation, 1), shiftRightAfterRotation, 1),
+                    shift(anchor, (BiFunction<Point, Integer, Point>) shiftRightAfterRotation, 1),
+                    shift(anchor, (BiFunction<Point, Integer, Point>) shiftBottomAfterRotation, 1),
+                    shift(shift(anchor, (BiFunction<Point, Integer, Point>) shiftBottomAfterRotation, 1), (BiFunction<Point, Integer, Point>) shiftRightAfterRotation, 1),
             };
         case GREEN:
             return new Point[] {
-                    shift(anchor, shiftLeftAfterRotation, 1),
+                    shift(anchor, (BiFunction<Point, Integer, Point>) shiftLeftAfterRotation, 1),
                     anchor,
-                    shift(anchor, shiftTopAfterRotation, 1),
-                    shift(shift(anchor, shiftTopAfterRotation, 1), shiftRightAfterRotation, 1),
+                    shift(anchor, (BiFunction<Point, Integer, Point>) shiftTopAfterRotation, 1),
+                    shift(shift(anchor, (BiFunction<Point, Integer, Point>) shiftTopAfterRotation, 1), (BiFunction<Point, Integer, Point>) shiftRightAfterRotation, 1),
             };
         case PURPLE:
             return new Point[] {
-                    shift(anchor, shiftLeftAfterRotation, 1),
+                    shift(anchor, (BiFunction<Point, Integer, Point>) shiftLeftAfterRotation, 1),
                     anchor,
-                    shift(anchor, shiftRightAfterRotation, 1),
-                    shift(anchor, shiftTopAfterRotation, 1),
+                    shift(anchor, (BiFunction<Point, Integer, Point>) shiftRightAfterRotation, 1),
+                    shift(anchor, (BiFunction<Point, Integer, Point>) shiftTopAfterRotation, 1),
             };
         case RED:
             return new Point[] {
-                    shift(shift(anchor, shiftTopAfterRotation, 1), shiftLeftAfterRotation, 1),
-                    shift(anchor, shiftTopAfterRotation, 1),
+                    shift(shift(anchor, (BiFunction<Point, Integer, Point>) shiftTopAfterRotation, 1), (BiFunction<Point, Integer, Point>) shiftLeftAfterRotation, 1),
+                    shift(anchor, (BiFunction<Point, Integer, Point>) shiftTopAfterRotation, 1),
                     anchor,
-                    shift(anchor, shiftRightAfterRotation, 1),
+                    shift(anchor, (BiFunction<Point, Integer, Point>) shiftRightAfterRotation, 1),
             };
         default:
             throw new IllegalArgumentException("Тип фигуры не поддерживается: " + figureType);
