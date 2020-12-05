@@ -33,8 +33,6 @@ import com.codenjoy.dojo.tetris.model.Elements;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.codenjoy.dojo.services.Command.*;
-
 /**
  * User: your name
  * Это твой алгоритм AI для игры. Реализуй его на свое усмотрение.
@@ -44,9 +42,25 @@ import static com.codenjoy.dojo.services.Command.*;
 public class YourSolver extends AbstractJsonSolver<Board> {
 
     private Dice dice;
+    private int counter = 0;
+
+    private CommandChain[] left = new CommandChain[10];
+    private CommandChain[] right = new CommandChain[10];
 
     public YourSolver(Dice dice) {
         this.dice = dice;
+        for (int i = 0; i < 10; i++) {
+            left[i] = new CommandChain();
+            right[i] = new CommandChain();
+        }
+        left[0].then(Command.LEFT).then(Command.DOWN);
+        right[0].then(Command.RIGHT).then(Command.DOWN);
+        for (int i = 1; i < 10; i++) {
+            left[i].then(Command.LEFT);
+            left[i].then(left[i-1]);
+            right[i].then(Command.RIGHT);
+            right[i].then(right[i-1]);
+        }
     }
 
     @Override
@@ -56,57 +70,10 @@ public class YourSolver extends AbstractJsonSolver<Board> {
 
     private CommandChain getAnswerList(Board board) {
         System.out.println(board.getGlass().getAt(board.getCurrentFigurePoint()));
-        //System.out.println(board.getCurrentFigureType());
-        System.out.println("какой-то текст для проверки");
+        System.out.println(board.getCurrentFigureType());
 
-        /** команды движения влево */
-        CommandChain left1 = new CommandChain();
-        left1.then(LEFT);
+        return left[5];
 
-        CommandChain left2 = left1.then(LEFT);
-        CommandChain left3 = left2.then(LEFT);
-        CommandChain left4 = left3.then(LEFT);
-        CommandChain left5 = left4.then(LEFT);
-        CommandChain left6 = left5.then(LEFT);
-        CommandChain left7 = left6.then(LEFT);
-        CommandChain left8 = left7.then(LEFT);
-
-        /** команды движения вправо */
-
-        CommandChain right1 = new CommandChain();
-        right1.then(RIGHT);
-        CommandChain right2 = right1.then(RIGHT);
-        CommandChain right3 = right2.then(RIGHT);
-        CommandChain right4 = right3.then(RIGHT);
-        CommandChain right5 = right4.then(RIGHT);
-        CommandChain right6 = right5.then(RIGHT);
-        CommandChain right7 = right6.then(RIGHT);
-        CommandChain right8 = right7.then(RIGHT);
-
-        /** массив минимальных размеров фигур*/
-        List<Integer> minSize = new ArrayList<>();
-        minSize.add(2); minSize.add(1); minSize.add(1); minSize.add(1);
-        System.out.println("проверка индекса" + minSize.get(0));
-
-        /** нахождение типа фигуры */
-        Elements typeFigure = board.getCurrentFigureType();
-        GlassBoard glassBoard = board.getGlass();
-        boolean checkLine = false;
-        for(int i=0; checkLine; i++){
-            int y = glassBoard.getFreeSpace().get(i).getY();
-            int x = glassBoard.getFreeSpace().get(i).getX();
-            boolean checkCell
-             for(int j=y+1;i<18; j++) {
-                 if (!board.getGlass().isFree(x, j)){
-                     break;
-                 }
-             }
-        }
-        System.out.println(glassBoard.getFreeSpace().get(0).getX());
-        System.out.println(glassBoard.getFreeSpace().get(0).getY());
-        System.out.println(glassBoard.getFreeSpace().get(0));
-        System.out.println(glassBoard.getFreeSpace());
-        return left8.then(Command.DOWN);
     }
 
     /*
