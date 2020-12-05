@@ -24,10 +24,7 @@ package com.codenjoy.dojo.tetris.client;
 
 import com.codenjoy.dojo.client.AbstractJsonSolver;
 import com.codenjoy.dojo.client.WebSocketRunner;
-import com.codenjoy.dojo.services.Command;
-import com.codenjoy.dojo.services.CommandChain;
-import com.codenjoy.dojo.services.Dice;
-import com.codenjoy.dojo.services.RandomDice;
+import com.codenjoy.dojo.services.*;
 import com.codenjoy.dojo.tetris.model.Elements;
 
 import java.util.ArrayList;
@@ -69,11 +66,69 @@ public class YourSolver extends AbstractJsonSolver<Board> {
     }
 
     private CommandChain getAnswerList(Board board) {
+
+
         System.out.println(board.getGlass().getAt(board.getCurrentFigurePoint()));
         System.out.println(board.getCurrentFigureType());
+        System.out.println(board.getGlass().getFreeSpace().get(0).getX());
+        System.out.println(board.getGlass().getFreeSpace().get(0).getY());
+        System.out.println(board.getGlass().getFreeSpace().get(0));
+        System.out.println(board.getGlass().getFreeSpace());
+        int pointX=board.getGlass().getFreeSpace().get(0).getX();
+        System.out.println(pointX);
+        CommandChain res = new CommandChain();
+        if(pointX<8) res.then(left[7-pointX]);
+        else if(pointX>8) res.then(right[pointX-9]);
+        else res.then(Command.DOWN);
+        return res;
 
-        return left[5];
+    }
+    /**
+     *  нахождение места под фигуру
+     */
 
+    /**
+     * проверка доступа к нижней точке сверху
+     */
+    public PointImpl checkLineVert(Board board){
+
+        GlassBoard glassBoard = board.getGlass();
+        /*for(int i=0;; i++){*/
+            int y = glassBoard.getFreeSpace().get(0).getY();
+            int x = glassBoard.getFreeSpace().get(0).getX();
+            return new PointImpl(x,y);
+       /* }*/
+    }
+   /* private boolean checkLineHor(int x, int y, Board board) {
+        for(int i=y;i<18; i++) {
+            if (!board.getGlass().isFree(x, i)) {
+                return false;
+            }
+            if (!emptiness(x, i, board)){
+
+            }
+        }
+    }
+    /**
+     * проверка на оставление фигурой пустот в данном месте
+     * @param x x
+     * @param y y
+     * @return true если оставляет пустоты
+     */
+    private boolean emptiness(int x, int y, Board board){
+        Elements typeFigure = board.getCurrentFigureType();
+        if(typeFigure.index()==1){
+            if (!board.getGlass().isFree(x, y)) return true;
+        }
+        if(typeFigure.index()==2) return false;
+        if(typeFigure.index()==3)
+        for(int i=x; i<x+typeFigure.getMinSize(); i++){
+            if (!board.getGlass().isFree(i, y)){
+                return true;
+            }
+
+        }
+        return false;
     }
 
     /*

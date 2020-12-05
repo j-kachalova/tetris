@@ -32,26 +32,44 @@ import com.codenjoy.dojo.services.printer.CharElements;
  */
 public enum Elements implements CharElements {
 
-    BLUE('I', 2),
-    CYAN('J', 3),
-    ORANGE('L', 4),
-    YELLOW('O', 1),
-    GREEN('S', 5),
-    PURPLE('T', 7),
-    RED('Z', 6),
-    NONE('.', 0);
+    BLUE('I', 2,1, 1,4),
+    CYAN('J', 3,1,2,3),
+    ORANGE('L', 4,1,2,3),
+    YELLOW('O', 1,2,2,2),
+    GREEN('S', 5,1,2,4),
+    PURPLE('T', 7,1,2,3),
+    RED('Z', 6,1,2,3),
+    NONE('.', 0,0,0,0);
 
     final char ch;
     final int index;
+    final int minSize;
+    final int midSize;
+    final int maxSize;
 
-    Elements(char ch, int index) {
+    Elements(char ch, int index, int minSize, int midSize, int maxSize) {
         this.ch = ch;
         this.index = index;
+        this.minSize = minSize;
+        this.midSize = midSize;
+        this.maxSize = maxSize;
     }
 
     @Override
     public char ch() {
         return ch;
+    }
+
+    public int getMinSize() {
+        return minSize;
+    }
+
+    public int getMidSize() {
+        return midSize;
+    }
+
+    public int getMaxSize() {
+        return maxSize;
     }
 
     @Override
