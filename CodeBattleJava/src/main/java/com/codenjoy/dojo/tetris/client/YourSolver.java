@@ -74,11 +74,10 @@ public class YourSolver extends AbstractJsonSolver<Board> {
         System.out.println(board.getGlass().getFreeSpace().get(0).getY());
         System.out.println(board.getGlass().getFreeSpace().get(0));
         System.out.println(board.getGlass().getFreeSpace());
-
-        int pointX=board.getGlass().getFreeSpace().get(0).getX();
-        int pointX1 = checkPlace(board).getX();
-        System.out.println(pointX1);
         CommandChain res = new CommandChain();
+        int pointX=board.getGlass().getFreeSpace().get(0).getX();
+        int pointX1 = checkPlace(board, res).getX();
+        System.out.println(pointX1);
         if(pointX1<8) res.then(left[7-pointX1]);
         else if(pointX1>8) res.then(right[pointX1-9]);
         else res.then(Command.DOWN);
@@ -88,7 +87,7 @@ public class YourSolver extends AbstractJsonSolver<Board> {
     /**
      *  нахождение места под фигуру
      */
-    public PointImpl checkPlace(Board board){
+    public PointImpl checkPlace(Board board, CommandChain res){
 
         GlassBoard glassBoard = board.getGlass();
         Elements type = board.getCurrentFigureType();
@@ -97,7 +96,7 @@ public class YourSolver extends AbstractJsonSolver<Board> {
             y = glassBoard.getFreeSpace().get(i).getY();
             x = glassBoard.getFreeSpace().get(i).getX();
             System.out.println("ноль "+glassBoard.getFreeSpace().get(i));
-            if(emptiness(x, y, board) == false){
+            if(emptiness(x, y, board, res) == false){
                 if(y!=0){
                     if (board.getGlass().isFree(x, y - 1) == false) {
                         if(type.index()==1){
@@ -138,14 +137,24 @@ public class YourSolver extends AbstractJsonSolver<Board> {
      * @param y y
      * @return true если оставляет пустоты
      */
-    private boolean emptiness(int x, int y, Board board){
+    private boolean emptiness(int x, int y, Board board, CommandChain res){
         Elements typeFigure = board.getCurrentFigureType();
         if(typeFigure.index()==1){
             if(x==17) return true;
             else if (board.getGlass().isFree(x+1, y)==false ) return true;
         }
-        /*if(typeFigure.index()==2) return false;
-        if(typeFigure.index()==3) return false;
+        if(typeFigure.index()==2){
+            boolean cell2 = board.getGlass().isFree(x+1, y);
+            boolean cell3 = board.getGlass().isFree(x+2, y);
+            boolean cell4 = board.getGlass().isFree(x+3, y);
+            if(cell2==true && cell3==true && cell4==true){
+                res.then(Command.ROTATE_CLOCKWISE_90)
+                        .then(Command.RIGHT)
+                        .then(Command.RIGHT);
+            }
+            return false;
+        }
+        /*if(typeFigure.index()==3) return false;
         for(int i=x; i<x+typeFigure.getMinSize(); i++){
             if (!board.getGlass().isFree(i, y)){
                 return true;
