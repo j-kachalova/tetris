@@ -93,27 +93,15 @@ public class YourSolver extends AbstractJsonSolver<Board> {
         GlassBoard glassBoard = board.getGlass();
         Elements type = board.getCurrentFigureType();
         int y; int x;
-        for(int i=0;;) {
+        for(int i=0;;i++) {
             y = glassBoard.getFreeSpace().get(i).getY();
             x = glassBoard.getFreeSpace().get(i).getX();
             System.out.println("ноль "+glassBoard.getFreeSpace().get(i));
-            if (emptiness(x, y, board) == true){
-                i++;
-                System.out.println("раз "+glassBoard.getFreeSpace().get(i));
-            }
-            else{
+            if(emptiness(x, y, board) == false){
                 if(y!=0){
-                    if (board.getGlass().isFree(x, y - 1) == true){
-                        i++;
-                        System.out.println("два "+glassBoard.getFreeSpace().get(i));
-                    }
-                    else {
+                    if (board.getGlass().isFree(x, y - 1) == false) {
                         if(type.index()==1){
-                            if (board.getGlass().isFree(x+1, y - 1) == true){
-                                i++;
-                                System.out.println("три "+glassBoard.getFreeSpace().get(i));
-                            }
-                            else break;
+                            if (board.getGlass().isFree(x+1, y - 1) == false) break;
                         }
                     /*if(type.index()==3)
                         if (board.getGlass().isFree(x-1, y - 1) == true && y!=0) i++;*/
