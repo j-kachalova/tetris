@@ -37,7 +37,7 @@ import java.util.List;
  * фреймворк для тебя.
  */
 public class YourSolver extends AbstractJsonSolver<Board> {
-
+    private List<PointImpl> emptyСells= new ArrayList<>();
     private Dice dice;
     private int counter = 0;
 
@@ -97,22 +97,33 @@ public class YourSolver extends AbstractJsonSolver<Board> {
             x = glassBoard.getFreeSpace().get(i).getX();
             System.out.println("ноль "+glassBoard.getFreeSpace().get(i));
             if(emptiness(x, y, board, res) == false){
-                if(y!=0){
-                    if (board.getGlass().isFree(x, y - 1) == false) {
-                        if(type.index()==1){
-                            if (board.getGlass().isFree(x+1, y - 1) == false) break;
-                        }
-                    /*if(type.index()==3)
-                        if (board.getGlass().isFree(x-1, y - 1) == true && y!=0) i++;*/
-                        else{
-                            System.out.println("четыре "+glassBoard.getFreeSpace().get(i));
-                            break;
-                        }
+                if(!emptyСells.contains(glassBoard.getFreeSpace().get(i))){
+                    if(y!=0){
+                            if(type.index()==1){
+                                if (board.getGlass().isFree(x, y - 1) == true ||
+                                        board.getGlass().isFree(x+1, y - 1) == true) break;
+                            }
+                            if (type.index() == 3) {
+                                if (board.getGlass().isFree(x, y - 1) == false &&
+                                        board.getGlass().isFree(x - 1, y - 1) == false){
+                                    System.out.println("проверочка");
+                                    break;
+                                }
+                                else{
+                                    System.out.println("проверочка 2");
+                                }
+                            }
+                        /*if(type.index()==3)
+                            if (board.getGlass().isFree(x-1, y - 1) == true && y!=0) i++;*/
+                            else{
+                                System.out.println("четыре "+glassBoard.getFreeSpace().get(i));
+                                break;
+                            }
                     }
-                }
-                else{
-                    System.out.println("пять "+glassBoard.getFreeSpace().get(i));
-                    break;
+                    else{
+                        System.out.println("пять "+glassBoard.getFreeSpace().get(i));
+                        break;
+                    }
                 }
             }
         }
@@ -140,8 +151,17 @@ public class YourSolver extends AbstractJsonSolver<Board> {
     private boolean emptiness(int x, int y, Board board, CommandChain res){
         Elements typeFigure = board.getCurrentFigureType();
         if(typeFigure.index()==1){
-            if(x==17) return true;
-            else if (board.getGlass().isFree(x+1, y)==false ) return true;
+            System.out.println("проверка квадрата 1");
+            if(x==17){
+                System.out.println("проверка квадрата 2");
+                emptyСells.add(new PointImpl(x,y));
+                return true;
+            }
+            else if (board.getGlass().isFree(x+1, y)==false ){
+                System.out.println("проверка квадрата 3");
+                emptyСells.add(new PointImpl(x,y));
+                return true;
+            }
         }
         if(typeFigure.index()==2){
             boolean cell2 = board.getGlass().isFree(x+1, y);
@@ -154,40 +174,61 @@ public class YourSolver extends AbstractJsonSolver<Board> {
             }
             return false;
         }
-        /*if(typeFigure.index()==3) return false;
-        for(int i=x; i<x+typeFigure.getMinSize(); i++){
-            if (!board.getGlass().isFree(i, y)){
-                return true;
+        if(typeFigure.index()==3){
+            /** проверка поворота на 90 градусов*/
+            boolean cellOne90 = board.getGlass().isFree(x+1, y);
+            boolean cellTwo90 = board.getGlass().isFree(x+2, y);
+            if(x!=17 && cellOne90==true && cellTwo90==true){
+                res.then(Command.ROTATE_CLOCKWISE_90);
+                return false;
             }
-
-        }*/
+            else{
+                if(x<16 && cellOne90==true) return false;
+                else{
+                    if(x!=0 || x!=1){
+                        /** проверка поворота на 270 градусов*/
+                        boolean cellOne270 = board.getGlass().isFree(x-1, y);
+                        boolean cellTwo270 = board.getGlass().isFree(x-2, y);
+                        boolean cellThree270 = board.getGlass().isFree(x-1, y+1);
+                        boolean cellFour270 = board.getGlass().isFree(x-2, y+1);
+                        System.out.println("проверочка 3");
+                        if(cellOne270==false && cellTwo270==false && cellThree270==true && cellFour270==true){
+                            res.then(Command.ROTATE_CLOCKWISE_270).then(Command.LEFT).then(Command.LEFT);
+                            System.out.println("проверочка 4");
+                            return false;
+                        }
+                    }
+                    if(x!=17){
+                        boolean cellOne180 = board.getGlass().isFree(x+1, y);
+                        boolean cellTwo180 = board.getGlass().isFree(x+1, y+1);
+                        boolean cellThree180 = board.getGlass().isFree(x+1, y+2);
+                        System.out.println("проверочка 5");
+                        if(cellOne180==false && cellTwo180==false && cellThree180==true){
+                            res.then(Command.ROTATE_CLOCKWISE_180).then(Command.LEFT);
+                            System.out.println("проверочка 6");
+                            return false;
+                        }
+                        else{
+                            emptyСells.add(new PointImpl(x,y));
+                            return true;
+                        }
+                    }
+                    else{
+                        System.out.println("проверочка 7");
+                        emptyСells.add(new PointImpl(x,y));
+                        return true;
+                    }
+                }
+            }
+        }
         return false;
     }
 
-    /*
-    ........I.........
-    ........I.........
-    ..................
-    ..................
-    ..................
-    ..................
-    ..................
-    ..................
-    ..................
-    ..................
-    ..................
-    ..................
-    ..................
-    ..................
-    I...I.............
-    I...I.............
-    IIOOI.I.I........I
-    IIOOI.I.I........I
-     */
+
     public static void main(String[] args) {
         WebSocketRunner.runClient(
                 // скопируйте сюда адрес из браузера, на который перейдете после регистрации/логина
-                "http://codebattle2020.westeurope.cloudapp.azure.com/codenjoy-contest/board/player/phxn1seylr4qai4f4v6n?code=7745898147695142163",
+                "http://codebattle2020.westeurope.cloudapp.azure.com/codenjoy-contest/board/player/ufbhiou615sio4unf5pv?code=5507207268535741977&gameName=tetris",
                 new YourSolver(new RandomDice()),
                 new Board());
     }
